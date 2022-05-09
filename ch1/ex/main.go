@@ -10,6 +10,30 @@ import (
 
 func main() {
 	//test1_7()
+	//test1_8()
+	test1_9()
+}
+
+func test1_9() {
+	for _, url := range os.Args[1:] {
+		prefix := "http://"
+		if !bytes.HasPrefix([]byte(url), []byte(prefix)) {
+			url = fmt.Sprintf("%s%s", prefix, url)
+		}
+		resp, err := http.Get(url)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "fetch: %v\n", err)
+			os.Exit(1)
+		}
+		_, err = io.Copy(os.Stdout, bytes.NewReader([]byte(resp.Status)))
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "fetch:reading %s: %v \n", url, err)
+			os.Exit(1)
+		}
+	}
+}
+
+func test1_8() {
 	for _, url := range os.Args[1:] {
 		prefix := "http://"
 		if !bytes.HasPrefix([]byte(url), []byte(prefix)) {
